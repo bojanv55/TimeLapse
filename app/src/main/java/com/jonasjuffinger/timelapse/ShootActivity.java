@@ -26,7 +26,7 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
 
     private int shotCount;
 
-    private TextView tvCount, tvBattery, tvRemaining;;
+    private TextView tvCount, tvBattery, tvRemaining, tvInfo;;
     private LinearLayout llEnd;
 
     private SurfaceView reviewSurfaceView;
@@ -104,6 +104,7 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
         }
 
         tvCount = (TextView) findViewById(R.id.tvCount);
+        tvInfo = (TextView) findViewById(R.id.tvInfo);
         tvBattery = (TextView) findViewById(R.id.tvBattery);
         tvRemaining = (TextView) findViewById(R.id.tvRemaining);
         llEnd = (LinearLayout) findViewById(R.id.llEnd);
@@ -137,12 +138,21 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
         catch(NoSuchMethodError ignored)
         {}
 
-
         //------
-        int isoSens = modifier.getISOSensitivity();
-        Pair shutterS = modifier.getShutterSpeed();
-        int aperture = modifier.getAperture();
-        //------
+        try {
+            final Camera.Parameters params2 = cameraEx.getNormalCamera().getParameters();
+            final CameraEx.ParametersModifier paramsModifier = cameraEx.createParametersModifier(params2);
+            List<Integer> m_supportedIsos = (List<Integer>)paramsModifier.getSupportedISOSensitivities();
+            Integer isoSens = paramsModifier.getISOSensitivity();
+            //Pair shutterS = modifier.getShutterSpeed();
+            Integer aperture = paramsModifier.getAperture();
+            tvInfo.setText(String.format("I:%s; A:%s", isoSens, aperture));
+        }
+        catch (Exception e){
+            tvInfo.setText(e.getMessage()); //I:100; A:350; 500; A7.1 == 710
+            log("error " + e.getMessage());
+        }
+        //-----
 
         cameraEx.getNormalCamera().setParameters(params);
 

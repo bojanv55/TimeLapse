@@ -3,19 +3,12 @@ package com.jonasjuffinger.timelapse;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TabHost;
-import android.widget.TextView;
-
+import android.widget.*;
 import com.github.ma1co.pmcademo.app.BaseActivity;
 import com.sony.scalar.hardware.CameraEx;
+
+import static com.jonasjuffinger.timelapse.Logger.log;
 
 public class SettingsActivity extends BaseActivity
 {
@@ -104,24 +97,30 @@ public class SettingsActivity extends BaseActivity
         {}*/
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        m_camera = CameraEx.open(0, null);
-        final Camera.Parameters params = m_camera.getNormalCamera().getParameters();
-        final CameraEx.ParametersModifier modifier = m_camera.createParametersModifier(params);
-
-        //------
-        int isoSens = modifier.getISOSensitivity();
-        Pair shutterS = modifier.getShutterSpeed();
-        int aperture = modifier.getAperture();
-        //------
-
-        infoStuff.setText(String.format("I:%s; A:%s", isoSens, aperture));
-    }
-
-    private CameraEx        m_camera;
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        try {
+//            m_camera = CameraEx.open(0, null);
+//            final Camera.Parameters params = m_camera.getNormalCamera().getParameters();
+//            final CameraEx.ParametersModifier modifier = m_camera.createParametersModifier(params);
+//
+//            //------
+//            Integer isoSens = modifier.getISOSensitivity();
+//            //Pair shutterS = modifier.getShutterSpeed();
+//            Integer aperture = modifier.getAperture();
+//            //------
+//
+//            infoStuff.setText(String.format("I:%s; A:%s", isoSens, aperture));
+//        }
+//        catch (Exception e){
+//            infoStuff.setText(e.getMessage());
+//            Logger.info("error" + e.getMessage());
+//        }
+//    }
+//
+//    private CameraEx m_camera;
 
     View.OnClickListener bnStartOnClickListener = new View.OnClickListener() {
         @Override
