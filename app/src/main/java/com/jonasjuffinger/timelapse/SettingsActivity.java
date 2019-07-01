@@ -1,7 +1,9 @@
 package com.jonasjuffinger.timelapse;
 
 import android.content.Intent;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -30,6 +32,8 @@ public class SettingsActivity extends BaseActivity
 
     private AdvancedSeekBar sbShots;
     private TextView tvShotsValue;
+
+    private TextView infoStuff;
 
     private TextView tvDurationValue, tvDurationUnit;
     private TextView tvVideoTimeValue, tvVideoTimeUnit;
@@ -62,6 +66,8 @@ public class SettingsActivity extends BaseActivity
 
         tvIntervalValue = (TextView) findViewById(R.id.tvIntervalValue);
         tvIntervalUnit = (TextView) findViewById(R.id.tvIntervalUnit);
+
+        infoStuff = (TextView) findViewById(R.id.infoStuff);
 
         tvDurationValue = (TextView) findViewById(R.id.tvDurationValue);
         tvDurationUnit = (TextView) findViewById(R.id.tvDurationUnit);
@@ -97,6 +103,25 @@ public class SettingsActivity extends BaseActivity
         catch(Exception ignored)
         {}*/
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        m_camera = CameraEx.open(0, null);
+        final Camera.Parameters params = m_camera.getNormalCamera().getParameters();
+        final CameraEx.ParametersModifier modifier = m_camera.createParametersModifier(params);
+
+        //------
+        int isoSens = modifier.getISOSensitivity();
+        Pair shutterS = modifier.getShutterSpeed();
+        int aperture = modifier.getAperture();
+        //------
+
+        infoStuff.setText(String.format("I:%s; A:%s", isoSens, aperture));
+    }
+
+    private CameraEx        m_camera;
 
     View.OnClickListener bnStartOnClickListener = new View.OnClickListener() {
         @Override

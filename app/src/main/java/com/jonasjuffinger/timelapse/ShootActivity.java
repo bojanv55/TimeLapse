@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -98,6 +99,10 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
         shotCount = 0;
         takingPicture = false;
 
+        if(cameraEx!=null){
+            cameraEx.getInitialParameters();
+        }
+
         tvCount = (TextView) findViewById(R.id.tvCount);
         tvBattery = (TextView) findViewById(R.id.tvBattery);
         tvRemaining = (TextView) findViewById(R.id.tvRemaining);
@@ -131,6 +136,14 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
         }
         catch(NoSuchMethodError ignored)
         {}
+
+
+        //------
+        int isoSens = modifier.getISOSensitivity();
+        Pair shutterS = modifier.getShutterSpeed();
+        int aperture = modifier.getAperture();
+        //------
+
         cameraEx.getNormalCamera().setParameters(params);
 
         pictureReviewTime = autoReviewControl.getPictureReviewTime();
