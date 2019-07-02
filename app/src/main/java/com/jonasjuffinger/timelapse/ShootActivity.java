@@ -144,9 +144,9 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
             final CameraEx.ParametersModifier paramsModifier = cameraEx.createParametersModifier(params2);
             List<Integer> m_supportedIsos = (List<Integer>)paramsModifier.getSupportedISOSensitivities();
             Integer isoSens = paramsModifier.getISOSensitivity();
-            //Pair shutterS = modifier.getShutterSpeed();
+            Pair<Integer, Integer> shutterS = modifier.getShutterSpeed();
             Integer aperture = paramsModifier.getAperture();
-            tvInfo.setText(String.format("I:%s; A:%s", isoSens, aperture));
+            tvInfo.setText(String.format("I:%s; A:%s; S:%s", isoSens, aperture, formatShutterSpeed(shutterS.first, shutterS.second)));
         }
         catch (Exception e){
             tvInfo.setText(e.getMessage()); //I:100; A:350; 500; A7.1 == 710
@@ -172,6 +172,21 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
         tvCount.setText(Integer.toString(shotCount)+"/"+Integer.toString(settings.shotCount));
         tvRemaining.setText("" + Integer.toString((settings.shotCount - shotCount) * settings.interval / 60) + "min");
         tvBattery.setText(getBatteryPercentage());
+    }
+
+    public static String formatShutterSpeed(int n, int d)
+    {
+        if (n == 1 && d != 2 && d != 1)
+            return String.format("%d/%d", n, d);
+        else if (d == 1)
+        {
+            if (n == 65535)
+                return "BULB";
+            else
+                return String.format("%d\"", n);
+        }
+        else
+            return String.format("%.1f\"", (float) n / (float) d);
     }
 
     @Override
