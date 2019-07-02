@@ -144,12 +144,12 @@ public class ShootActivity extends BaseActivity implements SurfaceHolder.Callbac
             final CameraEx.ParametersModifier paramsModifier = cameraEx.createParametersModifier(params2);
             List<Integer> m_supportedIsos = (List<Integer>)paramsModifier.getSupportedISOSensitivities();
             Integer isoSens = paramsModifier.getISOSensitivity();
-            Pair<Integer, Integer> shutterS = modifier.getShutterSpeed();
+            Pair<Integer, Integer> shutterS = paramsModifier.getShutterSpeed();
             Integer aperture = paramsModifier.getAperture();
             tvInfo.setText(String.format("I:%s; A:%s; S:%s", isoSens, aperture, formatShutterSpeed(shutterS.first, shutterS.second)));
         }
         catch (Exception e){
-            tvInfo.setText(e.getMessage()); //I:100; A:350; 500; A7.1 == 710
+            tvInfo.setText(e.getMessage()); //I:100; A:350; 500;  I500 je iso 500 F10 je 1000 A7.1 == 710 S1.3 (1.3")
             log("error " + e.getMessage());
         }
         //-----
